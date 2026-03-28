@@ -205,6 +205,11 @@ func (s *MCPServer) HandleCreateTask(params json.RawMessage, authToken string) (
 		return mcp.NewToolResultError(fmt.Sprintf("failed to create task: %v", err)), nil
 	}
 
+	err = session.Commit()
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("failed to commit: %v", err)), nil
+	}
+
 	return mcp.NewToolResultText(toJSON(task)), nil
 }
 
@@ -263,6 +268,11 @@ func (s *MCPServer) HandleUpdateTask(params json.RawMessage, authToken string) (
 		return mcp.NewToolResultError(fmt.Sprintf("failed to update task: %v", err)), nil
 	}
 
+	err = session.Commit()
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("failed to commit: %v", err)), nil
+	}
+
 	return mcp.NewToolResultText(toJSON(task)), nil
 }
 
@@ -295,6 +305,11 @@ func (s *MCPServer) HandleDeleteTask(params json.RawMessage, authToken string) (
 	err = task.Delete(session, u)
 	if err != nil {
 		return mcp.NewToolResultError(fmt.Sprintf("failed to delete task: %v", err)), nil
+	}
+
+	err = session.Commit()
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("failed to commit: %v", err)), nil
 	}
 
 	return mcp.NewToolResultText(`{"success": true, "message": "Task deleted successfully"}`), nil
