@@ -442,13 +442,13 @@ func (s *MCPServer) HandleGetKanbanBoard(params json.RawMessage, authToken strin
 	}
 
 	result := struct {
-		ProjectID int64         `json:"project_id"`
-		Title     string        `json:"title"`
-		Views     []interface{} `json:"views"`
+		ProjectID int64                 `json:"project_id"`
+		Title     string                `json:"title"`
+		Views     []*models.ProjectView `json:"views"`
 	}{
 		ProjectID: filter.ProjectID,
 		Title:     project.Title,
-		Views:     viewsResult.([]interface{}),
+		Views:     viewsResult.([]*models.ProjectView),
 	}
 
 	return mcp.NewToolResultText(toJSON(result)), nil
